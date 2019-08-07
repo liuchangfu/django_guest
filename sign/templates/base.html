@@ -9,6 +9,7 @@
     <title>{% block title %}{% endblock %}</title>
     <!-- Bootstrap -->
     <link href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}" rel="stylesheet">
+    {% block css %}{% endblock %}
     <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
     <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
     <!--[if lt IE 9]>
@@ -17,13 +18,14 @@
     <![endif]-->
 </head>
 <body>
-{% block content %}
 
-{% endblock %}
-
-{% block javascript %}
-
-{% endblock %}
+{% block content %}{% endblock %}
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div>
+        <p style="text-align: center;margin-top: 20px">&copy; Company 2019, Author:虫师</p>
+    </div>
+</nav>
+{% block javascript %}{% endblock %}
 <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
 <script src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
 </body>

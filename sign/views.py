@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from sign.models import Event,Guest
 
 
 # Create your views here.
@@ -26,7 +27,7 @@ def login(request):
                 # 将session 信息记录到浏览器
                 request.session['username'] = username
                 msg = '登录成功！！'
-                return render(request, 'login.html', locals())
+                return render(request, 'event_manage.html', locals())
             else:
                 msg = '用户名或密码错误！！'
                 return render(request, 'index.html', locals())
@@ -36,5 +37,6 @@ def login(request):
 
 @login_required
 def event_manage(request):
+    events = Event.objects.all()
     username = request.session.get('username', '')
     return render(request, 'event_manage.html', locals())
