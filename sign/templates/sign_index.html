@@ -1,10 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}{{ event.name }}{% endblock %}
 
-</body>
-</html>
+{% block content %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">{{ event.name }}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/event_manage/">发布会</a></li>
+                    <li><a href="/guest_manage/">嘉宾</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container">
+        <div class="page-header" style="padding-top: 25px">
+            <div class="navbar navbar-collapse collapse">
+                <form class="navbar-form" method="post" action="/sign_index_action/{{ event.id }}/">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="请输入手机号">
+                    </div>
+                    <button type="submit" class="btn btn-default">签到</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="alert-info">
+            {{ msg }}
+        </div>
+    </div>
+
+{% endblock %}

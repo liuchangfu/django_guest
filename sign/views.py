@@ -106,3 +106,31 @@ def guest_serach_name(request):
 def sign_index(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     return render(request, 'sign_index.html', locals())
+
+
+@login_required
+def sign_index_action(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    guest = Guest.objects.filter(event_id=event_id)
+
+    phone = request.POST.get('phone', '')
+    print(phone)
+
+    result1 = Guest.objects.filter(phone=phone)
+    if not result1:
+        msg = '手机号码错误，请重新输入。'
+        return render(request, 'sign_index.html', locals())
+
+    result2 = Guest.objects.filter(phone=phone, event_id=event_id)
+    if not result2:
+        msg = '发布会id错误或手机号错误！！！'
+        return render(request, 'sign_index.html', locals())
+
+    result3 = Guest.objects.get(phone=phone, event_id=event_id)
+    if result3.sign:
+        msg = '该用户已经签到，请勿重复签到！！'
+        return render(request, 'sign_index.html', locals())
+    else:
+        Guest.objects.filter(phone=phone, event_id=event_id).update(sign='1')
+        msg = '签到成功！！'
+        return render(request, 'sign_index.html', locals())
