@@ -19,8 +19,8 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/event_manage/">发布会</a></li>
-                    <li><a href="/guest_manage/">嘉宾</a></li>
+                    <li><a href="/event_manage/">发布会</a></li>
+                    <li class="active"><a href='/guest_manage/'>嘉宾</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -31,13 +31,13 @@
         </div><!-- /.container-fluid -->
     </nav>
 
-    {#发布会查询#}
+    {#嘉宾查询#}
     <div class="container" role="main">
         <div class="page-header" style="padding-top: 20px">
             <div id="navbar" class="navbar-collapse collapse">
-                <form class="navbar-form" method="get" action="{% url 'event_serach_name' %}">
+                <form class="navbar-form" method="get" action="{% url 'guest_serach_name' %}">
                     <div class="form-group">
-                        <input type="text" name="name" placeholder="发布会名称" class="form-control">
+                        <input type="text" name="name" placeholder="嘉宾名称" class="form-control">
                     </div>
                     <button type="submit" class="btn btn-success">搜索</button>
                 </form>
@@ -45,7 +45,7 @@
         </div>
 
 
-        {#发布会列表#}
+        {#嘉宾列表#}
         <div class="row" style="padding-top: 10px">
             <div class="col-lg-12">
                 <table class="table table-striped">
@@ -53,25 +53,25 @@
                     <tr>
                         <th>id</th>
                         <th>名称</th>
-                        <th>状态</th>
-                        <th>地址</th>
-                        <th>时间</th>
+                        <th>手机</th>
+                        <th>Email</th>
                         <th>签到</th>
+                        <th>发布会</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for event in events %}
+                    {% for guest in guests %}
                         <tr>
-                            <td>{{ event.id }}</td>
-                            <td>{{ event.name }}</td>
-                            <td>{{ event.status }}</td>
-                            <td>{{ event.address }}</td>
-                            <td>{{ event.create_time }}</td>
-                            <td><a href="/sign_index/{{ event.id }}/" target="{{ event.ud }}_blank">签到</a></td>
+                            <td>{{ guest.id }}</td>
+                            <td>{{ guest.realname }}</td>
+                            <td>{{ guest.phone }}</td>
+                            <td>{{ guest.email }}</td>
+                            <td>{{ guest.sign }}</td>
+                            <td>{{ guest.event }}</td>
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="5">
+                            <td colspan=6">
                                 <br>
                                 <p>{{ msg }}</p>
                             </td>
@@ -81,7 +81,8 @@
                 </table>
             </div>
         </div>
-         <!-- 列表分页器 -->
+
+        <!-- 列表分页器 -->
         <div class="pagination">
              <span class="step-links">
                 {% if contacts.has_previous %}

@@ -19,7 +19,12 @@ from sign import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', views.index, name='sing_index'),
-    path('login/', views.login, name='sign_login'),
+    path('index/', views.index, name='index'),
+    path('login/', views.login, name='login'),
     path('event_manage/', views.event_manage, name='event_manage'),
+    path('guest_manage/', views.guest_manage, name='guest_manage'),
+    path('serach_name/', views.event_serach_name, name='event_serach_name'),
+    path('guest_serach_name/', views.guest_serach_name, name='guest_serach_name'),
+    path('sign_index/<int:event_id>/', views.sign_index, name='sign_index'),
+    path('logout/', views.logout, name='logout'),
 ]
