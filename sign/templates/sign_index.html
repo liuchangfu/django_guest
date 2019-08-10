@@ -31,7 +31,7 @@
                 <form class="navbar-form" method="post" action="/sign_index_action/{{ event.id }}/">
                     {% csrf_token %}
                     <div class="form-group">
-                        <input class="form-control" type="text" placeholder="请输入手机号">
+                        <input class="form-control" type="text" name="phone" placeholder="请输入手机号">
                     </div>
                     <button type="submit" class="btn btn-default">签到</button>
                 </form>
