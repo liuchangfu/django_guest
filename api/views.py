@@ -3,6 +3,8 @@ from sign.models import Event, Guest
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import time
+
 
 # Create your views here.
 
@@ -42,17 +44,31 @@ def add_event(request):
     return JsonResponse({'status': 200, 'msg': 'add event success'})
 
 
+@csrf_exempt
 def add_guest(request):
-    pass
+    eid = request.POST.get('eid', '')
+    realname = request.POST.get('realname', '')
+    phone = request.POST.get('phone', '')
+    email = request.POST.get('email', '')
+
+    if eid == '' or realname == '' or phone == '' or email == '':
+        return JsonResponse({'status': 10021, 'msg': 'parameter error'})
+
+    result = Event.objects.filter(id=eid)
+    if not result:
+        return JsonResponse({'status': 10022, 'msg': 'event id null'})
+
+    result = Event.objects.get(id=eid).status
+    if not result:
+        return JsonResponse({'status': 10023, 'msg': 'event status id not available'})
 
 
-def get_event_list(request):
-    pass
 
+    def get_event_list(request):
+        pass
 
-def get_guest_list(request):
-    pass
+    def get_guest_list(request):
+        pass
 
-
-def user_sign(request):
-    pass
+    def user_sign(request):
+        pass
