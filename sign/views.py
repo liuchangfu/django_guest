@@ -114,11 +114,6 @@ def sign_index_action(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     guest = Guest.objects.filter(event_id=event_id)
     phone = request.POST.get('phone', '')
-    guest_data = len(guest)
-    sign_data = 0
-    for guest in guest:
-        if guest.sign == 1:
-            sign_data = sign_data + 1
 
     result1 = Guest.objects.filter(phone=phone)
     if not result1:

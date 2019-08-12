@@ -62,7 +62,7 @@
                         <th>最大签到人数</th>
 {#                        <th>已签到人数</th>#}
                         <th>地址</th>
-                        <th>时间</th>
+                        <th>发布会开始时间</th>
                         <th>签到</th>
                     </tr>
                     </thead>
@@ -73,9 +73,9 @@
                             <td>{{ event.name }}</td>
                             <td>{{ event.status }}</td>
                             <td>{{ event.limit }}</td>
-{#                            <td>{{ 0 }}</td>#}
+{#                            <td>{{  }}</td>#}
                             <td>{{ event.address }}</td>
-                            <td>{{ event.create_time }}</td>
+                            <td>{{ event.start_time }}</td>
                             <td><a href="/sign_index/{{ event.id }}/" target="{{ event.ud }}_blank">签到</a></td>
                         </tr>
                     {% empty %}
