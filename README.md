@@ -89,5 +89,5 @@
 | 传入参数 | eid---发布会id<br />phone ---嘉宾手机号                      |
 | 返回值   | {<br />     'status':200<br />     'message':sign success<br />} |
 | 状态码   | 10021:parameter error<br />10022:event id null<br />10023:event status is not available<br />10024:event has started<br />10025:user phone null<br />10026:user did not participate in the conference<br />10027:user has sign in<br />200:sign success |
-| 说吸     |                                                              |
+| 说明     |                                                              |
 

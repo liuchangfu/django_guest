@@ -39,7 +39,7 @@ def add_event(request):
     try:
         Event.objects.create(id=eid, name=name, limit=limit, address=address, status=int(status), start_time=start_time)
     except ValidationError as e:
-        error = 'start_time format error.It myst be in YYYY-MM-DD HH:MM:SS format'
+        error = 'start_time format error.It must be in YYYY-MM-DD HH:MM:SS format'
         return JsonResponse({'status': 10024, 'msg': error})
     return JsonResponse({'status': 200, 'msg': 'add event success'})
 
@@ -51,18 +51,51 @@ def add_guest(request):
     phone = request.POST.get('phone', '')
     email = request.POST.get('email', '')
 
-    if eid == '' or realname == '' or phone == '' or email == '':
+    # 判断eid,name,limit,address,status,start_time等字段不能为空
+    if eid == '' or realname == '' or phone == '':
         return JsonResponse({'status': 10021, 'msg': 'parameter error'})
 
+    # 判断嘉宾所关联的发布会id是否存在
     result = Event.objects.filter(id=eid)
     if not result:
         return JsonResponse({'status': 10022, 'msg': 'event id null'})
 
+    # 判断发布会的状态是否为TRUE
     result = Event.objects.get(id=eid).status
     if not result:
         return JsonResponse({'status': 10023, 'msg': 'event status id not available'})
 
+    # 发布会的最大限制人数
+    event_limit = Event.objects.get(id=eid).limit
+    # 发布会已签到的人数
+    guest_limit = Guest.objects.filter(event_id=eid)
 
+    if len(guest_limit) > event_limit:
+        return JsonResponse({'status': 10024, 'msg': 'event number is full'})
+
+    # 发布会开始时间
+    event_time = Event.objects.get(id=eid).start_time  # datetime.datetime(2019, 8, 12, 11, 44)
+    # 截取发布会的日期，格式为%Y-%m-%d
+    e_time = str(event_time).split('.')[0]  # ['2019-08-12 11:44:00']
+    # 将格式化时间字符串转化成结构化时间
+    timeArray = time.strptime(e_time, '%Y-%m-%d %H:%M:%S')
+    # 将一个结构化时间转化为时间戳，并转换int型
+    e_time = int(time.mktime(timeArray))
+
+    # 返回当前系统时间戳
+    now_time = str(time.time())
+    n_time = str(now_time).split('.')[0]  # ['1565589798', '5594625']
+    n_time = int(n_time)
+
+    if n_time >= e_time:
+        return JsonResponse({'status': 10025, 'msg': 'event has started'})
+
+    try:
+        Guest.objects.create(realname=realname, phone=int(phone), event_id=int(eid), email=email, sign=0)
+    except ValidationError as e:
+        return JsonResponse({'status': 10026, 'msg': 'the event guest phone number repeat'})
+
+    return JsonResponse({'status': 200, 'msg': 'add guest success'})
 
     def get_event_list(request):
         pass

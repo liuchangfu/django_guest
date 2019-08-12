@@ -37,4 +37,4 @@ class Guest(models.Model):
     class Meta:
         unique_together = ('event', 'phone')
         verbose_name_plural = '嘉宾表'
-        verbose_name ='嘉宾表'
+        verbose_name = '嘉宾表'

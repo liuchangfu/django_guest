@@ -59,6 +59,8 @@
                         <th>id</th>
                         <th>名称</th>
                         <th>状态</th>
+                        <th>最大签到人数</th>
+{#                        <th>已签到人数</th>#}
                         <th>地址</th>
                         <th>时间</th>
                         <th>签到</th>
@@ -70,6 +72,8 @@
                             <td>{{ event.id }}</td>
                             <td>{{ event.name }}</td>
                             <td>{{ event.status }}</td>
+                            <td>{{ event.limit }}</td>
+{#                            <td>{{ 0 }}</td>#}
                             <td>{{ event.address }}</td>
                             <td>{{ event.create_time }}</td>
                             <td><a href="/sign_index/{{ event.id }}/" target="{{ event.ud }}_blank">签到</a></td>
