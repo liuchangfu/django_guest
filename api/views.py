@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from sign.models import Event, Guest
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import time
@@ -97,11 +97,84 @@ def add_guest(request):
 
     return JsonResponse({'status': 200, 'msg': 'add guest success'})
 
-    def get_event_list(request):
-        pass
 
-    def get_guest_list(request):
-        pass
+def get_event_list(request):
+    eid = request.GET.get('eid', '')
+    name = request.GET.get('name', '')
 
-    def user_sign(request):
-        pass
+    if eid == '' and name == '':
+        return JsonResponse({'status': 10021, 'msg': 'parameter error'})
+
+    if eid != '':
+        event = {}
+        try:
+            result = Event.objects.get(id=eid)
+        except ObjectDoesNotExist:
+            return JsonResponse({'status': 10022, 'msg': 'query result is empty.'})
+        else:
+            event['name'] = result.name
+            event['limit'] = result.limit
+            event['status'] = result.status
+            event['address'] = result.address
+            event['start_time'] = result.start_time
+            return JsonResponse({'status': 200, 'msg': 'success', 'data': event})
+
+    if name != '':
+        datas = []
+        results = Event.objects.filter(name__contains=name)
+        print(results)
+        if results:
+            for r in results:
+                event = {}
+                event['name'] = r.name
+                event['limit'] = r.limit
+                event['status'] = r.status
+                event['address'] = r.address
+                event['start_time'] = r.start_time
+                datas.append(event)
+                print(datas)
+            return JsonResponse({'status': 200, 'msg': 'success', 'data': datas})
+        else:
+            return JsonResponse({'status': 10022, 'msg': 'query result is empty.'})
+
+
+def get_guest_list(request):
+    eid = request.GET.get('eid', '')
+    phone = request.GET.get('phone', '')
+
+    if eid == '':
+        return JsonResponse({'status': 10021, 'msg': 'eid cannot be empty.'})
+
+    if eid != '' and phone == '':
+        datas = []
+        results = Guest.objects.filter(event_id=eid)
+        if results:
+            for r in results:
+                guest = {}
+                guest['realname'] = r.realname
+                guest['phone'] = r.phone
+                guest['email'] = r.email
+                guest['sing'] = r.sign
+                datas.append(guest)
+                print(datas)
+            return JsonResponse({'status': 200, 'msg': 'success', 'data': datas})
+        else:
+            return JsonResponse({'status': 10022, 'msg': 'query is empty.'})
+
+    if eid != '' and phone != '':
+        guest = {}
+        try:
+            result = Guest.objects.get(phone=phone, event_id=eid)
+        except ObjectDoesNotExist:
+            return JsonResponse({'status': 10022, 'msg': 'query result is empty.'})
+        else:
+            guest['realname'] = result.realname
+            guest['phone'] = result.phone
+            guest['email'] = result.email
+            guest['sing'] = result.sign
+            print(guest)
+            return JsonResponse({'status': 200, 'msg': 'success', 'data': guest})
+
+
+def user_sign(request):
+    pass

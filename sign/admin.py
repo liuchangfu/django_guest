@@ -6,11 +6,12 @@ from sign.models import Event, Guest
 
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'status', 'start_time']
+    list_display = ['id', 'name', 'limit', 'address', 'status', 'start_time']
     list_filter = ['name']
     search_fields = ['status']
     list_display_links = ['name']
     list_per_page = 10
+
 
 class GuestAdmin(admin.ModelAdmin):
     list_display = ['id', 'realname', 'phone', 'email', 'sign', 'create_time']
