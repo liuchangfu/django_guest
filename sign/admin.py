@@ -7,10 +7,18 @@ from sign.models import Event, Guest
 
 class EventAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'limit', 'address', 'status', 'start_time']
-    list_filter = ['name']
+    list_filter = ['name', 'address']
     search_fields = ['status']
     list_display_links = ['name']
     list_per_page = 10
+
+    def get_readonly_fields(self, request, obj=None):
+        """  重新定义此函数，限制普通用户所能修改的字段  """
+        if request.user.is_superuser:
+            self.readonly_fields = []
+        return self.readonly_fields
+
+    readonly_fields = ['name', 'address', 'limit', 'status', 'start_time']
 
 
 class GuestAdmin(admin.ModelAdmin):
