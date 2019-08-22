@@ -136,6 +136,7 @@ def sign_index_action(request, event_id):
     else:
         Guest.objects.filter(phone=phone, event_id=event_id).update(sign='1')
         msg = '签到成功！！'
+        sign_data = 0
         sign_data = str(int(sign_data) + 1)
         return render(request, 'sign_index.html', locals())
 
